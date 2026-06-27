@@ -1,33 +1,39 @@
-from flask import Flask
-from flask_cors import CORS
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
+app = FastAPI(
+    title="Majestic North Tours API",
+    description="Professional Tourism API for Gilgit-Baltistan",
+    version="1.0.0"
+)
 
-# Import routes
-from routes.tours import tours_bp
-from routes.bookings import bookings_bp
-from routes.reviews import reviews_bp
-from routes.contacts import contacts_bp
-from routes.blogs import blogs_bp
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "https://majesticnorthtours.com"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# Register routes
-app.register_blueprint(tours_bp, url_prefix='/api')
-app.register_blueprint(bookings_bp, url_prefix='/api')
-app.register_blueprint(reviews_bp, url_prefix='/api')
-app.register_blueprint(contacts_bp, url_prefix='/api')
-app.register_blueprint(blogs_bp, url_prefix='/api')
+from routes.tours import router as tours_router
+from routes.bookings import router as bookings_router
+from routes.reviews import router as reviews_router
+from routes.contacts import router as contacts_router
+from routes.blogs import router as blogs_router
 
-@app.route("/")
+app.include_router(tours_router, prefix="/api")
+app.include_router(bookings_router, prefix="/api")
+app.include_router(reviews_router, prefix="/api")
+app.include_router(contacts_router, prefix="/api")
+app.include_router(blogs_router, prefix="/api")
+
+@app.get("/")
 def home():
     return {
         "project": "Majestic North Tours",
-        "status": "Backend Running Successfully 🏔️"
+        "status": "Backend Running Successfully 🏔️",
+        "docs": "/docs"
     }
-
-if __name__ == "__main__":
-    app.run(debug=True)

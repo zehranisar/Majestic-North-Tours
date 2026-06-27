@@ -1,42 +1,34 @@
-from flask import Blueprint, jsonify, request
+from fastapi import APIRouter
 from config import supabase
 
-tours_bp = Blueprint('tours', __name__)
+router = APIRouter()
 
-# Get all tours
-@tours_bp.route('/tours', methods=['GET'])
+@router.get("/tours")
 def get_tours():
     response = supabase.table('tours').select('*').execute()
-    return jsonify(response.data)
+    return response.data
 
-# Get single tour
-@tours_bp.route('/tours/<int:id>', methods=['GET'])
-def get_tour(id):
-    response = supabase.table('tours').select('*').eq('id', id).execute()
-    return jsonify(response.data[0] if response.data else {})
-
-# Get featured tours
-@tours_bp.route('/tours/featured', methods=['GET'])
+@router.get("/tours/featured")
 def get_featured_tours():
     response = supabase.table('tours').select('*').eq('is_featured', True).execute()
-    return jsonify(response.data)
+    return response.data
 
-# Add tour
-@tours_bp.route('/tours', methods=['POST'])
-def add_tour():
-    data = request.get_json()
+@router.get("/tours/{id}")
+def get_tour(id: int):
+    response = supabase.table('tours').select('*').eq('id', id).execute()
+    return response.data[0] if response.data else {}
+
+@router.post("/tours")
+def add_tour(data: dict):
     response = supabase.table('tours').insert(data).execute()
-    return jsonify(response.data)
+    return response.data
 
-# Update tour
-@tours_bp.route('/tours/<int:id>', methods=['PUT'])
-def update_tour(id):
-    data = request.get_json()
+@router.put("/tours/{id}")
+def update_tour(id: int, data: dict):
     response = supabase.table('tours').update(data).eq('id', id).execute()
-    return jsonify(response.data)
+    return response.data
 
-# Delete tour
-@tours_bp.route('/tours/<int:id>', methods=['DELETE'])
-def delete_tour(id):
-    response = supabase.table('tours').delete().eq('id', id).execute()
-    return jsonify({"message": "Tour deleted successfully"})
+@router.delete("/tours/{id}")
+def delete_tour(id: int):
+    supabase.table('tours').delete().eq('id', id).execute()
+    return {"message": "Tour deleted successfully"}

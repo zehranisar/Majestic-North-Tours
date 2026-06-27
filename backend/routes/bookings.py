@@ -1,36 +1,29 @@
-from flask import Blueprint, jsonify, request
+from fastapi import APIRouter
 from config import supabase
 
-bookings_bp = Blueprint('bookings', __name__)
+router = APIRouter()
 
-# Get all bookings
-@bookings_bp.route('/bookings', methods=['GET'])
+@router.get("/bookings")
 def get_bookings():
     response = supabase.table('bookings').select('*').execute()
-    return jsonify(response.data)
+    return response.data
 
-# Get single booking
-@bookings_bp.route('/bookings/<int:id>', methods=['GET'])
-def get_booking(id):
+@router.get("/bookings/{id}")
+def get_booking(id: int):
     response = supabase.table('bookings').select('*').eq('id', id).execute()
-    return jsonify(response.data[0] if response.data else {})
+    return response.data[0] if response.data else {}
 
-# Create booking
-@bookings_bp.route('/bookings', methods=['POST'])
-def create_booking():
-    data = request.get_json()
+@router.post("/bookings")
+def create_booking(data: dict):
     response = supabase.table('bookings').insert(data).execute()
-    return jsonify(response.data)
+    return response.data
 
-# Update booking status
-@bookings_bp.route('/bookings/<int:id>', methods=['PUT'])
-def update_booking(id):
-    data = request.get_json()
+@router.put("/bookings/{id}")
+def update_booking(id: int, data: dict):
     response = supabase.table('bookings').update(data).eq('id', id).execute()
-    return jsonify(response.data)
+    return response.data
 
-# Delete booking
-@bookings_bp.route('/bookings/<int:id>', methods=['DELETE'])
-def delete_booking(id):
-    response = supabase.table('bookings').delete().eq('id', id).execute()
-    return jsonify({"message": "Booking deleted successfully"})
+@router.delete("/bookings/{id}")
+def delete_booking(id: int):
+    supabase.table('bookings').delete().eq('id', id).execute()
+    return {"message": "Booking deleted successfully"}
