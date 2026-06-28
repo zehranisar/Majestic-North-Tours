@@ -1,8 +1,18 @@
+import HeroSection from '../components/home/HeroSection'
+import FeaturedTours from '../components/home/FeaturedTours'
+import WhyChooseUs from '../components/home/WhyChooseUs'
+import Testimonials from '../components/home/Testimonials'
+import StatsSection from '../components/home/StatsSection'
+
 const Home = () => {
   return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
+    <main>
+      <HeroSection />
+      <StatsSection />
+      <FeaturedTours />
+      <WhyChooseUs />
+      <Testimonials />
+    </main>
   )
 }
 
