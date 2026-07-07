@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import axios from 'axios'
@@ -30,14 +30,14 @@ const demoTours: Record<string, Tour> = {
     id: 1, name: 'Hunza Valley Tour', duration_days: 7, price: 150000, region: 'Hunza', difficulty: 'Easy', max_people: 5, is_featured: true,
     description: 'Experience the breathtaking beauty of Hunza Valley, one of the most spectacular regions in the world. Surrounded by some of the highest peaks on earth, Hunza offers stunning landscapes, rich culture, and warm hospitality.',
     images: [
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1598893669783-dda7c1fd69c7?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200&q=85&fit=crop',
     ],
     inclusions: ['Transport Islamabad to Hunza return', 'Hotel accommodation 6 nights', 'Daily breakfast', 'Expert local guide', 'All sightseeing and entry fees', 'Jeep safari where required'],
-    exclusions: ['Airfare', 'Personal expenses', 'Travel insurance', 'Tips for guides'],
+    exclusions: ['Airfare', 'Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Tips for guides'],
     itinerary: [
       { day: 1, title: 'Islamabad to Besham', desc: 'Depart from Islamabad early morning via Karakoram Highway. Overnight stay in Besham.' },
       { day: 2, title: 'Besham to Gilgit', desc: 'Continue journey northward through Kohistan. Cross Raikot Bridge with views of Nanga Parbat.' },
@@ -50,54 +50,54 @@ const demoTours: Record<string, Tour> = {
   },
   '2': {
     id: 2, name: 'Skardu Adventure', duration_days: 5, price: 95000, region: 'Skardu', difficulty: 'Moderate', max_people: 4, is_featured: true,
-    description: 'Explore the majestic Skardu region, gateway to K2. Experience crystal clear lakes, ancient forts and breathtaking mountain scenery.',
+    description: 'Explore the majestic Skardu region, gateway to K2. Experience crystal clear lakes, ancient forts and breathtaking mountain scenery of Baltistan.',
     images: [
+      'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
     ],
     inclusions: ['Transport Islamabad to Skardu return', 'Hotel accommodation 4 nights', 'Daily breakfast', 'Expert guide', 'All sightseeing'],
-    exclusions: ['Airfare', 'Personal expenses', 'Travel insurance', 'Tips for guides'],
+    exclusions: ['Airfare', 'Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Tips for guides'],
     itinerary: [
       { day: 1, title: 'Islamabad to Skardu', desc: 'Flight or road journey to Skardu. Check in to hotel.' },
       { day: 2, title: 'Skardu City Tour', desc: 'Visit Kharpocho Fort, Skardu bazaar and local attractions.' },
-      { day: 3, title: 'Shangrila Resort', desc: 'Visit Shangrila Resort and Manthokha Waterfall.' },
-      { day: 4, title: 'Deosai Plains', desc: 'Full day trip to Deosai National Park.' },
+      { day: 3, title: 'Shangrila Resort', desc: 'Visit Shangrila Resort (Heaven on Earth) and Manthokha Waterfall.' },
+      { day: 4, title: 'Deosai Plains', desc: 'Full day trip to Deosai National Park - worlds second highest plateau.' },
       { day: 5, title: 'Return Journey', desc: 'Depart from Skardu. Tour ends.' },
     ],
   },
   '3': {
     id: 3, name: 'Fairy Meadows Trek', duration_days: 3, price: 95000, region: 'Diamer', difficulty: 'Hard', max_people: 4, is_featured: true,
-    description: 'Trek to the magical Fairy Meadows with stunning view of Nanga Parbat - the Killer Mountain. A paradise for trekking enthusiasts.',
+    description: 'Trek to the magical Fairy Meadows with the stunning view of Nanga Parbat - the Killer Mountain at 8126m. A paradise for trekking enthusiasts.',
     images: [
+      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=1200&q=85&fit=crop',
     ],
-    inclusions: ['Transport to Raikot Bridge', 'Jeep from Raikot to Tato Village', 'Camping equipment', 'Daily breakfast', 'Expert treck guide', 'Porter services'],
-    exclusions: ['Personal trekking gear', 'Travel insurance', 'Personal expenses'],
+    inclusions: ['Transport to Raikot Bridge', 'Jeep from Raikot to Tato Village', 'Camping equipment', 'Daily breakfast', 'Expert trek guide', 'Porter services'],
+    exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
-      { day: 1, title: 'Islamabad to Fairy Meadows', desc: 'Drive to Raikot Bridge. Jeep to Tato Village. Trek to Fairy Meadows. Camp overnight.' },
-      { day: 2, title: 'Fairy Meadows Exploration', desc: 'Full day at Fairy Meadows. Optional trek to Nanga Parbat Base Camp.' },
+      { day: 1, title: 'Islamabad to Fairy Meadows', desc: 'Drive to Raikot Bridge. Jeep to Tato Village. Trek to Fairy Meadows 3 hours. Camp overnight.' },
+      { day: 2, title: 'Fairy Meadows Exploration', desc: 'Full day at Fairy Meadows. Optional trek to Nanga Parbat Base Camp at 3500m.' },
       { day: 3, title: 'Return Journey', desc: 'Sunrise view of Nanga Parbat. Trek back and return to Islamabad.' },
     ],
   },
   '4': {
     id: 4, name: 'Deosai Plains Tour', duration_days: 3, price: 70000, region: 'Skardu', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Visit the worlds second highest plateau, Deosai National Park. Famous for Himalayan brown bears and breathtaking landscapes at 4114m altitude.',
+    description: 'Visit Deosai National Park - the worlds second highest plateau at 4114m. Famous for Himalayan brown bears, wildflowers and stunning landscapes.',
     images: [
       'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
     ],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Park entry fee'],
-    exclusions: ['Personal expenses', 'Travel insurance', 'Airfare'],
+    exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
       { day: 1, title: 'Islamabad to Skardu', desc: 'Depart from Islamabad. Arrive Skardu. Check in to hotel.' },
       { day: 2, title: 'Deosai National Park', desc: 'Full day at Deosai Plains. Spot Himalayan brown bears and wildflowers.' },
@@ -106,149 +106,149 @@ const demoTours: Record<string, Tour> = {
   },
   '5': {
     id: 5, name: 'Naltar Valley Tour', duration_days: 3, price: 75000, region: 'Gilgit', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Discover the stunning Naltar Valley famous for its colorful lakes, pine forests and skiing resort. One of the most beautiful valleys in Gilgit-Baltistan.',
+    description: 'Discover Naltar Valley famous for its three stunning colorful lakes, dense pine forests and Pakistan Air Force skiing resort. A hidden paradise in Gilgit.',
     images: [
       'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
     ],
-    inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', ' expert Guide', 'Jeep safari'],
-    exclusions: ['Personal expenses', 'Travel insurance', 'Skiing charges'],
+    inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Guide', 'Jeep safari'],
+    exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Skiing charges'],
     itinerary: [
       { day: 1, title: 'Gilgit to Naltar', desc: 'Depart from Gilgit. Jeep ride to Naltar Valley. Check in to guesthouse.' },
-      { day: 2, title: 'Naltar Lakes', desc: 'Visit the famous colorful Naltar Lakes. Photography and nature walk.' },
+      { day: 2, title: 'Naltar Lakes', desc: 'Visit the three famous colorful Naltar Lakes. Photography and nature walk.' },
       { day: 3, title: 'Return to Gilgit', desc: 'Morning at leisure. Return to Gilgit. Tour ends.' },
     ],
   },
   '6': {
     id: 6, name: 'Attabad Lake Tour', duration_days: 1, price: 35000, region: 'Hunza', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Visit the stunning turquoise Attabad Lake formed after a massive landslide in 2010. One of the most photographed lakes in Pakistan.',
+    description: 'Visit the stunning turquoise Attabad Lake formed after a massive landslide in 2010. Now one of the most photographed and visited lakes in Pakistan.',
     images: [
       'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
     ],
-    inclusions: ['Transport from Gilgit', 'Boat ride', 'Guide', 'Breakfast, lunch and dinner'],
-    exclusions: ['Personal expenses', 'Travel insurance'],
+    inclusions: ['Transport from Gilgit', 'Boat ride on Attabad Lake', 'Guide', 'Breakfast'],
+    exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance'],
     itinerary: [
-      { day: 1, title: 'Gilgit to Attabad Lake and Return', desc: 'Depart from Gilgit. Drive to Attabad Lake. Boat ride. Photography. Return to Gilgit.' },
+      { day: 1, title: 'Gilgit to Attabad Lake and Return', desc: 'Depart from Gilgit early morning. Drive to Attabad Lake. Boat ride. Photography. Return to Gilgit.' },
     ],
   },
   '7': {
     id: 7, name: 'Shigar Valley Tour', duration_days: 4, price: 65000, region: 'Skardu', difficulty: 'Easy', max_people: 4, is_featured: false,
-    description: 'Explore the ancient Shigar Valley with its magnificent fort, apricot orchards and traditional Balti culture. A hidden gem of Gilgit-Baltistan.',
+    description: 'Explore ancient Shigar Valley with its magnificent 17th century Shigar Fort, apricot orchards and traditional Balti culture. A hidden gem near Skardu.',
     images: [
       'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
     ],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Fort entry fee'],
-    exclusions: ['Personal expenses', 'Travel insurance', 'Airfare'],
+    exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
       { day: 1, title: 'Skardu to Shigar', desc: 'Depart from Skardu. Arrive Shigar. Check in to Shigar Fort Residence.' },
-      { day: 2, title: 'Shigar Fort and Village', desc: 'Visit the historic Shigar Fort. Explore traditional Balti village.' },
-      { day: 3, title: 'Apricot Orchards', desc: 'Walk through apricot orchards. Visit local craftsmen.' },
+      { day: 2, title: 'Shigar Fort and Village', desc: 'Visit the historic 17th century Shigar Fort. Explore traditional Balti village and crafts.' },
+      { day: 3, title: 'Apricot Orchards', desc: 'Walk through famous apricot orchards. Visit local craftsmen and woodworkers.' },
       { day: 4, title: 'Return to Skardu', desc: 'Morning at leisure. Return to Skardu. Tour ends.' },
     ],
   },
   '8': {
     id: 8, name: 'Rama Meadows Tour', duration_days: 2, price: 60000, region: 'Astore', difficulty: 'Moderate', max_people: 4, is_featured: false,
-    description: 'Trek to Rama Meadows near Astore Valley with breathtaking views of Nanga Parbat. A paradise for nature lovers and trekkers.',
+    description: 'Trek to Rama Meadows at 3300m in Astore Valley with spectacular views of Nanga Parbat. A paradise for nature lovers, photographers and trekkers.',
     images: [
-      'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
     ],
-    inclusions: ['Transport', 'Camping equipment', 'Daily breakfast', 'expert guide', 'Porter'],
-    exclusions: ['Personal trekking gear', 'Travel insurance', 'Personal expenses'],
+    inclusions: ['Transport', 'Camping equipment', 'Daily breakfast', 'Trek guide', 'Porter'],
+    exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
-      { day: 1, title: 'Gilgit to Rama Lake', desc: 'Depart from Gilgit. Drive to Astore. Trek to Rama Meadows. Camp overnight.' },
-      { day: 2, title: 'Return Journey', desc: 'Morning views of Nanga Parbat. Trek back. Return to Gilgit.' },
+      { day: 1, title: 'Gilgit to Rama Meadows', desc: 'Depart from Gilgit. Drive to Astore. Trek 2 hours to Rama Meadows at 3300m. Camp overnight with Nanga Parbat views.' },
+      { day: 2, title: 'Return Journey', desc: 'Morning sunrise views of Nanga Parbat. Trek back. Return to Gilgit.' },
     ],
   },
   '9': {
     id: 9, name: 'Passu Cones and Glacier', duration_days: 4, price: 85000, region: 'Hunza', difficulty: 'Moderate', max_people: 4, is_featured: false,
-    description: 'Experience the iconic Passu Cathedral Cones and Batura Glacier - one of the longest glaciers outside polar regions.',
+    description: 'Experience the iconic Passu Cathedral Cones - Pakistans most dramatic rock formation - and walk on Batura Glacier, one of the longest glaciers outside polar regions.',
     images: [
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
     ],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Glacier walk equipment'],
-    exclusions: ['Personal expenses', 'Travel insurance', 'Airfare'],
+    exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
-      { day: 1, title: 'Gilgit to Passu', desc: 'Depart from Gilgit. Arrive Passu. Evening walk to viewpoint.' },
-      { day: 2, title: 'Passu Cones', desc: 'Full day photography and hiking around Passu Cathedral Cones.' },
-      { day: 3, title: 'Batura Glacier', desc: 'Trek to Batura Glacier - one of the longest glaciers in the world.' },
-      { day: 4, title: 'Return to Gilgit', desc: 'Morning at leisure. Return to Gilgit. Tour ends.' },
+      { day: 1, title: 'Gilgit to Passu', desc: 'Depart from Gilgit. Arrive Passu village. Check in. Evening walk to viewpoint.' },
+      { day: 2, title: 'Passu Cones Photography', desc: 'Full day hiking and photography around iconic Passu Cathedral Cones.' },
+      { day: 3, title: 'Batura Glacier Walk', desc: 'Trek to Batura Glacier - 57km long, one of the longest glaciers in the world outside polar regions.' },
+      { day: 4, title: 'Return to Gilgit', desc: 'Morning at leisure. Drive back to Gilgit. Tour ends.' },
     ],
   },
   '10': {
     id: 10, name: 'Khaplu Highlights', duration_days: 4, price: 85000, region: 'Ghanche', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Explore the beautiful Khaplu Valley, home to the magnificent Khaplu Palace and stunning Shyok River views.',
+    description: 'Explore beautiful Khaplu Valley - home to the magnificent restored Khaplu Palace, stunning Shyok River views and traditional Balti culture in Ghanche district.',
     images: [
-      'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
     ],
-    inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Palace entry'],
-    exclusions: ['Personal expenses', 'Travel insurance', 'Airfare'],
+    inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Khaplu Palace entry'],
+    exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
-      { day: 1, title: 'Skardu to Khaplu', desc: 'Depart from Skardu. Scenic drive to Khaplu. Check in to hotel.' },
-      { day: 2, title: 'Khaplu Palace', desc: 'Visit the historic Khaplu Palace. Explore local bazaar and culture.' },
-      { day: 3, title: 'Shyok River', desc: 'Drive along Shyok River. Visit nearby villages and viewpoints.' },
+      { day: 1, title: 'Skardu to Khaplu', desc: 'Depart from Skardu. Scenic 2 hour drive along Shyok River to Khaplu. Check in.' },
+      { day: 2, title: 'Khaplu Palace', desc: 'Visit the magnificently restored Khaplu Palace. Explore local bazaar and traditional Balti culture.' },
+      { day: 3, title: 'Shyok River Valley', desc: 'Drive along stunning Shyok River. Visit Mashabrum viewpoint and nearby villages.' },
       { day: 4, title: 'Return to Skardu', desc: 'Morning at leisure. Return to Skardu. Tour ends.' },
     ],
   },
   '11': {
     id: 11, name: 'Thagas Valley Tour', duration_days: 5, price: 99999, region: 'Ghanche', difficulty: 'Moderate', max_people: 4, is_featured: false,
-    description: 'Discover the hidden Thagas Valley, one of the least explored valleys in Gilgit-Baltistan. Untouched nature and traditional mountain life.',
+    description: 'Discover the pristine Thagas Valley near Khaplu - one of the least explored and most beautiful valleys in Gilgit-Baltistan with untouched nature and traditional mountain life.',
     images: [
-      'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
     ],
     inclusions: ['Transport', 'Camping equipment', 'Daily breakfast', 'Expert guide', 'Porter services'],
-    exclusions: ['Personal trekking gear', 'Travel insurance', 'Personal expenses'],
+    exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
       { day: 1, title: 'Skardu to Khaplu', desc: 'Depart from Skardu. Drive to Khaplu. Overnight stay.' },
-      { day: 2, title: 'Khaplu to Thagas', desc: 'Drive and trek into Thagas Valley. Set up camp.' },
-      { day: 3, title: 'Thagas Exploration', desc: 'Full day exploring Thagas Valley. Visit local villages.' },
-      { day: 4, title: 'Upper Thagas', desc: 'Trek to upper valley. Stunning mountain views.' },
-      { day: 5, title: 'Return Journey', desc: 'Trek back and return to Skardu. Tour ends.' },
+      { day: 2, title: 'Khaplu to Thagas', desc: 'Drive and trek into Thagas Valley. Set up base camp.' },
+      { day: 3, title: 'Thagas Valley Exploration', desc: 'Full day exploring pristine Thagas Valley. Visit traditional villages and local people.' },
+      { day: 4, title: 'Upper Thagas Trek', desc: 'Trek to upper valley for panoramic mountain views.' },
+      { day: 5, title: 'Return Journey', desc: 'Trek back. Return to Skardu. Tour ends.' },
     ],
   },
   '12': {
     id: 12, name: 'Chitral and Kalash', duration_days: 5, price: 120000, region: 'Chitral', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Visit the unique Kalash people, one of the last pagan tribes of Pakistan. Experience their colorful festivals, traditions and beautiful Chitral Valley.',
+    description: 'Visit the unique Kalash people - one of the last pagan tribes of Pakistan with ancient Greek heritage. Experience their colorful festivals, unique traditions and beautiful Chitral Valley.',
     images: [
       'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
     ],
-    inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Cultural tour'],
-    exclusions: ['Airfare', 'Personal expenses', 'Travel insurance'],
+    inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Cultural tour of Kalash valleys'],
+    exclusions: ['Airfare', 'Lunch and dinner', 'Personal expenses', 'Travel insurance'],
     itinerary: [
       { day: 1, title: 'Islamabad to Chitral', desc: 'Flight or road journey to Chitral. Check in to hotel.' },
-      { day: 2, title: 'Chitral City Tour', desc: 'Visit Chitral Fort, Shahi Mosque and local bazaar.' },
-      { day: 3, title: 'Kalash Valleys', desc: 'Visit Bumburet Valley. Meet Kalash people. Experience unique culture.' },
-      { day: 4, title: 'Rambur Valley', desc: 'Visit Rambur Kalash Valley. Photography and cultural immersion.' },
+      { day: 2, title: 'Chitral City Tour', desc: 'Visit Chitral Fort, Shahi Mosque, Polo Ground and local bazaar.' },
+      { day: 3, title: 'Bumburet Kalash Valley', desc: 'Visit Bumburet Valley. Meet Kalash people. Experience their unique ancient culture and traditions.' },
+      { day: 4, title: 'Rumbur Valley', desc: 'Visit Rumbur Kalash Valley. Photography and cultural immersion with local families.' },
       { day: 5, title: 'Return Journey', desc: 'Depart from Chitral. Return to Islamabad. Tour ends.' },
     ],
   },
@@ -300,7 +300,6 @@ const TourDetail = () => {
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
 
-      {/* Hero Image */}
       <div className="relative h-[550px] overflow-hidden">
         <motion.img
           key={activeImg}
@@ -327,7 +326,6 @@ const TourDetail = () => {
         </div>
       </div>
 
-      {/* 5 Image Thumbnails */}
       <div className="bg-[#0d1f3c] py-3">
         <div className="max-w-4xl mx-auto px-6 flex gap-2 justify-center">
           {tour.images.map((img, i) => (
@@ -343,7 +341,6 @@ const TourDetail = () => {
         </div>
       </div>
 
-      {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-2 text-sm text-gray-500">
           <Link to="/" className="hover:text-[#1a3a6b]">Home</Link>
@@ -354,14 +351,11 @@ const TourDetail = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* Left */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* Quick Info */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-4 bg-blue-50 rounded-xl">
@@ -387,7 +381,6 @@ const TourDetail = () => {
               </div>
             </div>
 
-            {/* Tabs */}
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
               <div className="flex border-b border-gray-100">
                 {['overview', 'itinerary', 'inclusions'].map((tab) => (
@@ -450,7 +443,6 @@ const TourDetail = () => {
               </div>
             </div>
 
-            {/* Cancellation Policy */}
             <div className="bg-white rounded-2xl shadow-sm p-6">
               <h3 className="font-bold text-[#0d1f3c] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>Cancellation Policy</h3>
               <div className="space-y-3">
@@ -474,7 +466,6 @@ const TourDetail = () => {
             </div>
           </div>
 
-          {/* Right Booking Card */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
               <div className="text-center pb-6 border-b border-gray-100 mb-6">
@@ -517,7 +508,7 @@ const TourDetail = () => {
                   <span className="text-green-500 font-bold">✓</span>24/7 customer support
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span className="text-green-500 font-bold">✓</span>only breakfast included
+                  <span className="text-green-500 font-bold">✓</span>Breakfast included
                 </div>
               </div>
             </div>
