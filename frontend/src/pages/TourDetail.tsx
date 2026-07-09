@@ -1,7 +1,18 @@
+
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
 import axios from 'axios'
+
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+})
 
 interface ItineraryItem {
   day: number
@@ -23,11 +34,15 @@ interface Tour {
   exclusions: string[]
   itinerary: ItineraryItem[]
   images: string[]
+  coordinates: [number, number]
+  availability: boolean[]
 }
 
 const demoTours: Record<string, Tour> = {
   '1': {
     id: 1, name: 'Hunza Valley Tour', duration_days: 7, price: 150000, region: 'Hunza', difficulty: 'Easy', max_people: 5, is_featured: true,
+    coordinates: [36.3167, 74.6500],
+    availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Experience the breathtaking beauty of Hunza Valley, one of the most spectacular regions in the world. Surrounded by some of the highest peaks on earth, Hunza offers stunning landscapes, rich culture, and warm hospitality.',
     images: [
       'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
@@ -50,6 +65,8 @@ const demoTours: Record<string, Tour> = {
   },
   '2': {
     id: 2, name: 'Skardu Adventure', duration_days: 5, price: 95000, region: 'Skardu', difficulty: 'Moderate', max_people: 4, is_featured: true,
+    coordinates: [35.2971, 75.6333],
+    availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Explore the majestic Skardu region, gateway to K2. Experience crystal clear lakes, ancient forts and breathtaking mountain scenery of Baltistan.',
     images: [
       'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
@@ -70,6 +87,8 @@ const demoTours: Record<string, Tour> = {
   },
   '3': {
     id: 3, name: 'Fairy Meadows Trek', duration_days: 3, price: 95000, region: 'Diamer', difficulty: 'Hard', max_people: 4, is_featured: true,
+    coordinates: [35.3731, 74.5897],
+    availability: [false, false, false, false, true, true, true, true, true, false, false, false],
     description: 'Trek to the magical Fairy Meadows with the stunning view of Nanga Parbat - the Killer Mountain at 8126m. A paradise for trekking enthusiasts.',
     images: [
       'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
@@ -88,6 +107,8 @@ const demoTours: Record<string, Tour> = {
   },
   '4': {
     id: 4, name: 'Deosai Plains Tour', duration_days: 3, price: 70000, region: 'Skardu', difficulty: 'Easy', max_people: 5, is_featured: false,
+    coordinates: [34.9833, 75.5500],
+    availability: [false, false, false, false, false, true, true, true, true, false, false, false],
     description: 'Visit Deosai National Park - the worlds second highest plateau at 4114m. Famous for Himalayan brown bears, wildflowers and stunning landscapes.',
     images: [
       'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
@@ -106,7 +127,9 @@ const demoTours: Record<string, Tour> = {
   },
   '5': {
     id: 5, name: 'Naltar Valley Tour', duration_days: 3, price: 75000, region: 'Gilgit', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Discover Naltar Valley famous for its three stunning colorful lakes, dense pine forests and Pakistan Air Force skiing resort. A hidden paradise in Gilgit.',
+    coordinates: [36.1667, 74.2500],
+    availability: [false, false, false, true, true, true, true, true, true, true, false, false],
+    description: 'Discover Naltar Valley famous for its three stunning colorful lakes, dense pine forests and Pakistan Air Force skiing resort.',
     images: [
       'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
@@ -124,7 +147,9 @@ const demoTours: Record<string, Tour> = {
   },
   '6': {
     id: 6, name: 'Attabad Lake Tour', duration_days: 1, price: 35000, region: 'Hunza', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Visit the stunning turquoise Attabad Lake formed after a massive landslide in 2010. Now one of the most photographed and visited lakes in Pakistan.',
+    coordinates: [36.3333, 74.8667],
+    availability: [false, false, false, true, true, true, true, true, true, true, true, false],
+    description: 'Visit the stunning turquoise Attabad Lake formed after a massive landslide in 2010. One of the most photographed lakes in Pakistan.',
     images: [
       'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
@@ -140,7 +165,9 @@ const demoTours: Record<string, Tour> = {
   },
   '7': {
     id: 7, name: 'Shigar Valley Tour', duration_days: 4, price: 65000, region: 'Skardu', difficulty: 'Easy', max_people: 4, is_featured: false,
-    description: 'Explore ancient Shigar Valley with its magnificent 17th century Shigar Fort, apricot orchards and traditional Balti culture. A hidden gem near Skardu.',
+    coordinates: [35.5167, 75.7667],
+    availability: [false, false, false, true, true, true, true, true, true, true, false, false],
+    description: 'Explore ancient Shigar Valley with its magnificent 17th century Shigar Fort, apricot orchards and traditional Balti culture.',
     images: [
       'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
@@ -152,14 +179,16 @@ const demoTours: Record<string, Tour> = {
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
       { day: 1, title: 'Skardu to Shigar', desc: 'Depart from Skardu. Arrive Shigar. Check in to Shigar Fort Residence.' },
-      { day: 2, title: 'Shigar Fort and Village', desc: 'Visit the historic 17th century Shigar Fort. Explore traditional Balti village and crafts.' },
-      { day: 3, title: 'Apricot Orchards', desc: 'Walk through famous apricot orchards. Visit local craftsmen and woodworkers.' },
+      { day: 2, title: 'Shigar Fort and Village', desc: 'Visit the historic 17th century Shigar Fort. Explore traditional Balti village.' },
+      { day: 3, title: 'Apricot Orchards', desc: 'Walk through famous apricot orchards. Visit local craftsmen.' },
       { day: 4, title: 'Return to Skardu', desc: 'Morning at leisure. Return to Skardu. Tour ends.' },
     ],
   },
   '8': {
     id: 8, name: 'Rama Meadows Tour', duration_days: 2, price: 60000, region: 'Astore', difficulty: 'Moderate', max_people: 4, is_featured: false,
-    description: 'Trek to Rama Meadows at 3300m in Astore Valley with spectacular views of Nanga Parbat. A paradise for nature lovers, photographers and trekkers.',
+    coordinates: [35.1667, 74.7500],
+    availability: [false, false, false, false, true, true, true, true, true, false, false, false],
+    description: 'Trek to Rama Meadows at 3300m in Astore Valley with spectacular views of Nanga Parbat.',
     images: [
       'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
@@ -170,13 +199,15 @@ const demoTours: Record<string, Tour> = {
     inclusions: ['Transport', 'Camping equipment', 'Daily breakfast', 'Trek guide', 'Porter'],
     exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
-      { day: 1, title: 'Gilgit to Rama Meadows', desc: 'Depart from Gilgit. Drive to Astore. Trek 2 hours to Rama Meadows at 3300m. Camp overnight with Nanga Parbat views.' },
+      { day: 1, title: 'Gilgit to Rama Meadows', desc: 'Depart from Gilgit. Drive to Astore. Trek 2 hours to Rama Meadows at 3300m. Camp overnight.' },
       { day: 2, title: 'Return Journey', desc: 'Morning sunrise views of Nanga Parbat. Trek back. Return to Gilgit.' },
     ],
   },
   '9': {
     id: 9, name: 'Passu Cones and Glacier', duration_days: 4, price: 85000, region: 'Hunza', difficulty: 'Moderate', max_people: 4, is_featured: false,
-    description: 'Experience the iconic Passu Cathedral Cones - Pakistans most dramatic rock formation - and walk on Batura Glacier, one of the longest glaciers outside polar regions.',
+    coordinates: [36.4667, 74.8667],
+    availability: [false, false, false, false, true, true, true, true, true, false, false, false],
+    description: 'Experience the iconic Passu Cathedral Cones and walk on Batura Glacier, one of the longest glaciers outside polar regions.',
     images: [
       'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
@@ -189,13 +220,15 @@ const demoTours: Record<string, Tour> = {
     itinerary: [
       { day: 1, title: 'Gilgit to Passu', desc: 'Depart from Gilgit. Arrive Passu village. Check in. Evening walk to viewpoint.' },
       { day: 2, title: 'Passu Cones Photography', desc: 'Full day hiking and photography around iconic Passu Cathedral Cones.' },
-      { day: 3, title: 'Batura Glacier Walk', desc: 'Trek to Batura Glacier - 57km long, one of the longest glaciers in the world outside polar regions.' },
+      { day: 3, title: 'Batura Glacier Walk', desc: 'Trek to Batura Glacier - 57km long, one of the longest glaciers in the world.' },
       { day: 4, title: 'Return to Gilgit', desc: 'Morning at leisure. Drive back to Gilgit. Tour ends.' },
     ],
   },
   '10': {
     id: 10, name: 'Khaplu Highlights', duration_days: 4, price: 85000, region: 'Ghanche', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Explore beautiful Khaplu Valley - home to the magnificent restored Khaplu Palace, stunning Shyok River views and traditional Balti culture in Ghanche district.',
+    coordinates: [35.1667, 76.3333],
+    availability: [false, false, false, true, true, true, true, true, true, true, false, false],
+    description: 'Explore beautiful Khaplu Valley - home to the magnificent restored Khaplu Palace and stunning Shyok River views.',
     images: [
       'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
@@ -207,14 +240,16 @@ const demoTours: Record<string, Tour> = {
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
       { day: 1, title: 'Skardu to Khaplu', desc: 'Depart from Skardu. Scenic 2 hour drive along Shyok River to Khaplu. Check in.' },
-      { day: 2, title: 'Khaplu Palace', desc: 'Visit the magnificently restored Khaplu Palace. Explore local bazaar and traditional Balti culture.' },
-      { day: 3, title: 'Shyok River Valley', desc: 'Drive along stunning Shyok River. Visit Mashabrum viewpoint and nearby villages.' },
+      { day: 2, title: 'Khaplu Palace', desc: 'Visit the magnificently restored Khaplu Palace. Explore local bazaar.' },
+      { day: 3, title: 'Shyok River Valley', desc: 'Drive along stunning Shyok River. Visit Mashabrum viewpoint.' },
       { day: 4, title: 'Return to Skardu', desc: 'Morning at leisure. Return to Skardu. Tour ends.' },
     ],
   },
   '11': {
     id: 11, name: 'Thagas Valley Tour', duration_days: 5, price: 99999, region: 'Ghanche', difficulty: 'Moderate', max_people: 4, is_featured: false,
-    description: 'Discover the pristine Thagas Valley near Khaplu - one of the least explored and most beautiful valleys in Gilgit-Baltistan with untouched nature and traditional mountain life.',
+    coordinates: [35.2000, 76.4000],
+    availability: [false, false, false, false, true, true, true, true, false, false, false, false],
+    description: 'Discover the pristine Thagas Valley near Khaplu - one of the least explored valleys in Gilgit-Baltistan.',
     images: [
       'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
@@ -227,14 +262,16 @@ const demoTours: Record<string, Tour> = {
     itinerary: [
       { day: 1, title: 'Skardu to Khaplu', desc: 'Depart from Skardu. Drive to Khaplu. Overnight stay.' },
       { day: 2, title: 'Khaplu to Thagas', desc: 'Drive and trek into Thagas Valley. Set up base camp.' },
-      { day: 3, title: 'Thagas Valley Exploration', desc: 'Full day exploring pristine Thagas Valley. Visit traditional villages and local people.' },
+      { day: 3, title: 'Thagas Valley Exploration', desc: 'Full day exploring pristine Thagas Valley.' },
       { day: 4, title: 'Upper Thagas Trek', desc: 'Trek to upper valley for panoramic mountain views.' },
       { day: 5, title: 'Return Journey', desc: 'Trek back. Return to Skardu. Tour ends.' },
     ],
   },
   '12': {
     id: 12, name: 'Chitral and Kalash', duration_days: 5, price: 120000, region: 'Chitral', difficulty: 'Easy', max_people: 5, is_featured: false,
-    description: 'Visit the unique Kalash people - one of the last pagan tribes of Pakistan with ancient Greek heritage. Experience their colorful festivals, unique traditions and beautiful Chitral Valley.',
+    coordinates: [35.8500, 71.7833],
+    availability: [false, false, false, true, true, true, true, true, true, true, false, false],
+    description: 'Visit the unique Kalash people - one of the last pagan tribes of Pakistan with ancient heritage.',
     images: [
       'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85&fit=crop',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
@@ -247,12 +284,14 @@ const demoTours: Record<string, Tour> = {
     itinerary: [
       { day: 1, title: 'Islamabad to Chitral', desc: 'Flight or road journey to Chitral. Check in to hotel.' },
       { day: 2, title: 'Chitral City Tour', desc: 'Visit Chitral Fort, Shahi Mosque, Polo Ground and local bazaar.' },
-      { day: 3, title: 'Bumburet Kalash Valley', desc: 'Visit Bumburet Valley. Meet Kalash people. Experience their unique ancient culture and traditions.' },
-      { day: 4, title: 'Rumbur Valley', desc: 'Visit Rumbur Kalash Valley. Photography and cultural immersion with local families.' },
+      { day: 3, title: 'Bumburet Kalash Valley', desc: 'Visit Bumburet Valley. Meet Kalash people. Experience their unique culture.' },
+      { day: 4, title: 'Rumbur Valley', desc: 'Visit Rumbur Kalash Valley. Photography and cultural immersion.' },
       { day: 5, title: 'Return Journey', desc: 'Depart from Chitral. Return to Islamabad. Tour ends.' },
     ],
   },
 }
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 const TourDetail = () => {
   const { id } = useParams()
@@ -300,6 +339,7 @@ const TourDetail = () => {
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
 
+      {/* Hero Image */}
       <div className="relative h-[550px] overflow-hidden">
         <motion.img
           key={activeImg}
@@ -326,6 +366,7 @@ const TourDetail = () => {
         </div>
       </div>
 
+      {/* 5 Thumbnails */}
       <div className="bg-[#0d1f3c] py-3">
         <div className="max-w-4xl mx-auto px-6 flex gap-2 justify-center">
           {tour.images.map((img, i) => (
@@ -341,6 +382,7 @@ const TourDetail = () => {
         </div>
       </div>
 
+      {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-2 text-sm text-gray-500">
           <Link to="/" className="hover:text-[#1a3a6b]">Home</Link>
@@ -351,11 +393,14 @@ const TourDetail = () => {
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
+          {/* Left */}
           <div className="lg:col-span-2 space-y-6">
 
+            {/* Quick Info */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-4 bg-blue-50 rounded-xl">
@@ -381,6 +426,7 @@ const TourDetail = () => {
               </div>
             </div>
 
+            {/* Tabs */}
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
               <div className="flex border-b border-gray-100">
                 {['overview', 'itinerary', 'inclusions'].map((tab) => (
@@ -443,6 +489,64 @@ const TourDetail = () => {
               </div>
             </div>
 
+            {/* Availability Calendar */}
+            <div className="bg-white rounded-2xl shadow-sm p-6">
+              <h3 className="font-bold text-[#0d1f3c] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>Tour Availability</h3>
+              <p className="text-gray-400 text-sm mb-4">Available months for this tour</p>
+              <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
+                {months.map((month, i) => (
+                  <div
+                    key={i}
+                    className={`text-center py-2.5 px-1 rounded-xl text-xs font-semibold transition-all ${
+                      tour.availability[i]
+                        ? 'bg-green-100 text-green-700 border border-green-200'
+                        : 'bg-gray-100 text-gray-400 border border-gray-200'
+                    }`}
+                  >
+                    <div className="font-bold">{month}</div>
+                    <div className="mt-1 text-base">{tour.availability[i] ? '✓' : '✗'}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-6 mt-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-400" />
+                  <span className="text-xs text-gray-500">Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-gray-300" />
+                  <span className="text-xs text-gray-500">Not Available</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Location Map */}
+            <div className="bg-white rounded-2xl shadow-sm p-6">
+              <h3 className="font-bold text-[#0d1f3c] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>Tour Location</h3>
+              <div className="rounded-xl overflow-hidden border border-gray-100" style={{ height: '320px' }}>
+                <MapContainer
+                  center={tour.coordinates}
+                  zoom={10}
+                  style={{ height: '100%', width: '100%' }}
+                  scrollWheelZoom={false}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; OpenStreetMap contributors'
+                  />
+                  <Marker position={tour.coordinates}>
+                    <Popup>
+                      <div className="text-center p-1">
+                        <p className="font-bold text-sm text-[#0d1f3c]">{tour.name}</p>
+                        <p className="text-xs text-gray-500 mt-1">{tour.region}, Pakistan</p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                </MapContainer>
+              </div>
+            </div>
+
+            {/* Cancellation Policy */}
             <div className="bg-white rounded-2xl shadow-sm p-6">
               <h3 className="font-bold text-[#0d1f3c] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>Cancellation Policy</h3>
               <div className="space-y-3">
@@ -466,6 +570,7 @@ const TourDetail = () => {
             </div>
           </div>
 
+          {/* Right Booking Card */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
               <div className="text-center pb-6 border-b border-gray-100 mb-6">
@@ -513,6 +618,7 @@ const TourDetail = () => {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
