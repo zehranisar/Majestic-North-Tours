@@ -12,10 +12,12 @@ const FeaturedTours = () => {
   }, [])
 
   const demoTours = [
-    { id: 1, name: 'Hunza Valley Tour', duration_days: 7, price: 150000, region: 'Hunza', image_url: '🏔️' },
-    { id: 2, name: 'Skardu Adventure', duration_days: 5, price: 95000, region: 'Skardu', image_url: '⛰️' },
-    { id: 3, name: 'Fairy Meadows Trek', duration_days: 3, price: 95000, region: 'Diamer', image_url: '🌄' },
+    { id: 1, name: 'Hunza Valley Tour', duration_days: 7, price:75000 , region: 'Hunza', image_url: '🏔️' },
+    { id: 2, name: 'Skardu Adventure', duration_days: 5, price: 47500, region: 'Skardu', image_url: '⛰️' },
+    { id: 3, name: 'Fairy Meadows Trek', duration_days: 3, price: 47500, region: 'Diamer', image_url: '🌄' },
   ]
+
+  
 
   const displayTours = tours.length > 0 ? tours : demoTours
 

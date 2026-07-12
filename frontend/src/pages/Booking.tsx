@@ -23,18 +23,18 @@ interface BookingForm {
 }
 
 const demoTours: Record<string, Tour> = {
-  '1': { id: 1, name: 'Hunza Valley Tour', duration_days: 7, price: 150000, region: 'Hunza', difficulty: 'Easy', max_people: 5 },
-  '2': { id: 2, name: 'Skardu Adventure', duration_days: 5, price: 95000, region: 'Skardu', difficulty: 'Moderate', max_people: 4 },
-  '3': { id: 3, name: 'Fairy Meadows Trek', duration_days: 3, price: 95000, region: 'Diamer', difficulty: 'Hard', max_people: 4 },
-  '4': { id: 4, name: 'Deosai Plains Tour', duration_days: 3, price: 70000, region: 'Skardu', difficulty: 'Easy', max_people: 5 },
-  '5': { id: 5, name: 'Naltar Valley Tour', duration_days: 3, price: 75000, region: 'Gilgit', difficulty: 'Easy', max_people: 5 },
-  '6': { id: 6, name: 'Attabad Lake Tour', duration_days: 1, price: 35000, region: 'Hunza', difficulty: 'Easy', max_people: 5 },
-  '7': { id: 7, name: 'Shigar Valley Tour', duration_days: 4, price: 65000, region: 'Skardu', difficulty: 'Easy', max_people: 4 },
-  '8': { id: 8, name: 'Rama Meadows Tour', duration_days: 2, price: 60000, region: 'Astore', difficulty: 'Moderate', max_people: 4 },
-  '9': { id: 9, name: 'Passu Cones and Glacier', duration_days: 4, price: 85000, region: 'Hunza', difficulty: 'Moderate', max_people: 4 },
-  '10': { id: 10, name: 'Khaplu Highlights', duration_days: 4, price: 85000, region: 'Ghanche', difficulty: 'Easy', max_people: 5 },
-  '11': { id: 11, name: 'Thagas Valley Tour', duration_days: 5, price: 99999, region: 'Ghanche', difficulty: 'Moderate', max_people: 4 },
-  '12': { id: 12, name: 'Chitral and Kalash', duration_days: 5, price: 120000, region: 'Chitral', difficulty: 'Easy', max_people: 5 },
+  '1': { id: 1, name: 'Hunza Valley Tour', duration_days: 7, price: 75000, region: 'Hunza', difficulty: 'Easy', max_people: 5 },
+  '2': { id: 2, name: 'Skardu Adventure', duration_days: 5, price: 47500, region: 'Skardu', difficulty: 'Moderate', max_people: 4 },
+  '3': { id: 3, name: 'Fairy Meadows Trek', duration_days: 3, price: 47500, region: 'Diamer', difficulty: 'Hard', max_people: 4 },
+  '4': { id: 4, name: 'Deosai Plains Tour', duration_days: 3, price: 35000, region: 'Skardu', difficulty: 'Easy', max_people: 5 },
+  '5': { id: 5, name: 'Naltar Valley Tour', duration_days: 3, price: 35000, region: 'Gilgit', difficulty: 'Easy', max_people: 5 },
+  '6': { id: 6, name: 'Attabad Lake Tour', duration_days: 1, price: 17500, region: 'Hunza', difficulty: 'Easy', max_people: 5 },
+  '7': { id: 7, name: 'Shigar Valley Tour', duration_days: 4, price: 32500, region: 'Skardu', difficulty: 'Easy', max_people: 4 },
+  '8': { id: 8, name: 'Rama Meadows Tour', duration_days: 2, price: 30000, region: 'Astore', difficulty: 'Moderate', max_people: 4 },
+  '9': { id: 9, name: 'Passu Cones and Glacier', duration_days: 4, price:  42500, region: 'Hunza', difficulty: 'Moderate', max_people: 4 },
+  '10': { id: 10, name: 'Khaplu Highlights', duration_days: 4, price: 42500, region: 'Ghanche', difficulty: 'Easy', max_people: 5 },
+  '11': { id: 11, name: 'Thagas Valley Tour', duration_days: 5, price: 50000, region: 'Ghanche', difficulty: 'Moderate', max_people: 4 },
+  '12': { id: 12, name: 'Chitral and Kalash', duration_days: 5, price:60000 , region: 'Chitral', difficulty: 'Easy', max_people: 5 },
 }
 
 const Booking = () => {
