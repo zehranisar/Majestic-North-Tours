@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from config import supabase
+from routes.notifications import send_contact_notification
 
 router = APIRouter()
 
@@ -12,6 +13,15 @@ def get_contacts():
 def submit_contact(data: dict):
     data['is_read'] = False
     response = supabase.table('contacts').insert(data).execute()
+    
+    # Send notification email
+    send_contact_notification(
+        name=data.get('name', ''),
+        email=data.get('email', ''),
+        subject=data.get('subject', 'General'),
+        message=data.get('message', '')
+    )
+    
     return {"message": "Message sent successfully! We will contact you soon."}
 
 @router.put("/contacts/{id}/read")
