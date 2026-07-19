@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
+from routes.notifications import router as notifications_router
+app.include_router(notifications_router, prefix="/api")
+
 load_dotenv()
 
 app = FastAPI(
