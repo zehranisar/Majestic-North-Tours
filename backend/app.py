@@ -2,9 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from routes.notifications import router as notifications_router
-app.include_router(notifications_router, prefix="/api")
-
 load_dotenv()
 
 app = FastAPI(
@@ -15,7 +12,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://majesticnorthtours.com"],
+    allow_origins=["http://localhost:5173", "https://majesticnorthtours.com", "https://majestic-north-tours.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,12 +23,14 @@ from routes.bookings import router as bookings_router
 from routes.reviews import router as reviews_router
 from routes.contacts import router as contacts_router
 from routes.blogs import router as blogs_router
+from routes.notifications import router as notifications_router
 
 app.include_router(tours_router, prefix="/api")
 app.include_router(bookings_router, prefix="/api")
 app.include_router(reviews_router, prefix="/api")
 app.include_router(contacts_router, prefix="/api")
 app.include_router(blogs_router, prefix="/api")
+app.include_router(notifications_router, prefix="/api")
 
 @app.get("/")
 def home():
