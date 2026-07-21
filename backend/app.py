@@ -24,7 +24,12 @@ from routes.reviews import router as reviews_router
 from routes.contacts import router as contacts_router
 from routes.blogs import router as blogs_router
 from routes.notifications import router as notifications_router
+from routes.uploads import router as uploads_router
+from routes.admin import router as admin_router
 
+
+app.include_router(admin_router, prefix="/api")
+app.include_router(uploads_router, prefix="/api")
 app.include_router(tours_router, prefix="/api")
 app.include_router(bookings_router, prefix="/api")
 app.include_router(reviews_router, prefix="/api")
