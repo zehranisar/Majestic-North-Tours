@@ -1,3 +1,4 @@
+import { API_URL } from '../config'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import axios from 'axios'
@@ -14,7 +15,7 @@ const Contact = () => {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      await axios.post('http://127.0.0.1:8000/api/contacts', {
+      await axios.post(`${API_URL}/api/contacts`, {
         name: form.name, email: form.email, phone: form.phone, subject: form.subject, message: form.message,
       })
     } catch { }

@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+ import { API_URL } from '../config'
+ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -55,7 +56,7 @@ const Booking = () => {
   })
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/tours/${id}`)
+    axios.get(`${API_URL}/api/tours/${id}`)
       .then(res => {
         if (res.data && res.data.id) setTour(res.data)
         else setTour(demoTours[id as string] || demoTours['1'])
@@ -78,7 +79,7 @@ const Booking = () => {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      await axios.post('http://127.0.0.1:8000/api/bookings', {
+      await axios.post(`${API_URL}/api/bookings`, {
         tour_id: tour?.id,
         customer_name: form.customer_name,
         customer_email: form.customer_email,

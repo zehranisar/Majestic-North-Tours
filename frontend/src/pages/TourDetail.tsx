@@ -1,3 +1,4 @@
+import { API_URL } from '../config'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -302,7 +303,7 @@ const TourDetail = () => {
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`http://127.0.0.1:8000/api/tours/${id}`)
+    axios.get(`${API_URL}/api/tours/${id}`)
       .then(res => {
         if (res.data && res.data.id) setTour(res.data)
         else setTour(demoTours[id as string] || demoTours['1'])

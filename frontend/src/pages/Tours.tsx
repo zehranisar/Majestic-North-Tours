@@ -1,3 +1,4 @@
+import { API_URL } from '../config'
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
@@ -51,7 +52,7 @@ const Tours = () => {
   const regions = ['All', 'Hunza', 'Skardu', 'Gilgit', 'Diamer', 'Ghanche', 'Astore', 'Chitral']
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/tours')
+    axios.get(`${API_URL}/api/tours`)
       .then(res => {
         const data = res.data.length > 0 ? res.data : demoTours
         setTours(data)
