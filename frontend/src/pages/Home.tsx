@@ -27,9 +27,9 @@ const Home = () => {
   ]
 
   const featuredTours = [
-    { id: 1, name: 'Hunza Valley Tour', duration: 7, price: 150000, region: 'Hunza', difficulty: 'Easy', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&fit=crop' },
-    { id: 2, name: 'Skardu Adventure', duration: 5, price: 95000, region: 'Skardu', difficulty: 'Moderate', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop' },
-    { id: 3, name: 'Fairy Meadows Trek', duration: 3, price: 95000, region: 'Diamer', difficulty: 'Hard', image: 'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=600&q=80&fit=crop' },
+    { id: 1, name: 'Hunza Valley Tour', duration: 7, price: 75000, region: 'Hunza', difficulty: 'Easy', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&fit=crop' },
+    { id: 2, name: 'Skardu Adventure', duration: 5, price: 47500, region: 'Skardu', difficulty: 'Moderate', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop' },
+    { id: 3, name: 'Fairy Meadows Trek', duration: 3, price: 47500, region: 'Diamer', difficulty: 'Hard', image: 'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=600&q=80&fit=crop' },
   ]
 
   const whyUs = [
@@ -48,21 +48,22 @@ const Home = () => {
   ]
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="w-full overflow-hidden">
 
       {/* HERO */}
       <div
-        className="relative min-h-screen flex items-center justify-center"
+        className="relative w-full flex items-center justify-center"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=1920&q=90&fit=crop')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d1f3c]/80 via-[#0d1f3c]/55 to-[#0d1f3c]/90" />
 
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-24">
+        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto w-full" style={{ paddingTop: '120px', paddingBottom: '60px' }}>
+
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-8">
               <span className="text-yellow-400">⭐</span>
@@ -119,21 +120,6 @@ const Home = () => {
               </div>
             ))}
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="w-6 h-10 border-2 border-white/40 rounded-full flex items-start justify-center p-1.5 mx-auto"
-            >
-              <div className="w-1.5 h-2.5 bg-white/60 rounded-full" />
-            </motion.div>
-          </motion.div>
         </div>
       </div>
 
@@ -172,6 +158,7 @@ const Home = () => {
                       <div>
                         <span className="text-xs text-gray-400">Starting from</span>
                         <p className="text-xl font-bold text-[#c0392b]">PKR {tour.price.toLocaleString()}</p>
+                        <span className="text-xs text-gray-400">per person</span>
                       </div>
                       <Link to={`/tours/${tour.id}`} className="bg-[#1a3a6b] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-[#c0392b] transition-colors duration-200">
                         View Details
@@ -230,7 +217,6 @@ const Home = () => {
           backgroundImage: "url('https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1920&q=90&fit=crop')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
         }}
       >
         <div className="absolute inset-0 bg-[#0d1f3c]/88" />

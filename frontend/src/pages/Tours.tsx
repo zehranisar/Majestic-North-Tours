@@ -150,16 +150,20 @@ const Tours = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 focus:outline-none focus:border-white transition-all"
               />
+
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
                 className="bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
               >
+
                 <option value="default" className="text-gray-800">Sort By</option>
                 <option value="price_low" className="text-gray-800">Price: Low to High</option>
                 <option value="price_high" className="text-gray-800">Price: High to Low</option>
                 <option value="duration" className="text-gray-800">Duration</option>
-              </select>
+              </select>             
+
+              
             </div>
             <div className="flex flex-wrap gap-2 justify-center">
               {regions.map(r => (
@@ -167,8 +171,8 @@ const Tours = () => {
                   key={r}
                   onClick={() => setRegion(r)}
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${region === r ? 'bg-[#c0392b] text-white shadow-md' : 'bg-white/15 text-white hover:bg-white/25'}`}
-                >
-                  {r}
+                >             
+                {r}
                 </button>
               ))}
             </div>
@@ -176,6 +180,13 @@ const Tours = () => {
         </div>
       </div>
 
+      <div className="flex items-center justify-between mb-8">
+  <p className="text-gray-500 text-sm font-medium">{filtered.length} tours found</p>
+  <Link to="/compare" className="flex items-center gap-2 bg-[#1a3a6b] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#c0392b] transition-colors">
+    ⚖️ Compare Tours
+  </Link>
+</div>
+      
       {/* Tours Grid */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <p className="text-gray-500 text-sm mb-8 font-medium">{filtered.length} tours found</p>

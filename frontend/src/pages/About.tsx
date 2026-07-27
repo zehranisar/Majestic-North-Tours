@@ -69,70 +69,59 @@ const About = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
 
-      {/* Full Page Hero */}
-      <div
-        className="relative min-h-screen flex items-center justify-center"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=90&fit=crop')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d1f3c]/80 via-[#0d1f3c]/55 to-[#0d1f3c]/90" />
-
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-20">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block bg-[#c0392b] text-white text-xs px-4 py-1.5 rounded-full font-semibold mb-6 tracking-widest uppercase">
-              About Us
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
-            Pakistan's Premier
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mt-2">
-              Tourism Company
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-white/75 text-xl max-w-2xl mx-auto leading-relaxed mb-14"
-          >
-            We are passionate about showcasing the breathtaking beauty of Northern Pakistan to travelers from around the world.
-          </motion.p>
-
-          {/* Animated Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-          >
-            {stats.map((stat, i) => (
-              <div key={i} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300">
-                <div className="text-3xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-bold text-white mb-1">
-                  <AnimatedCounter target={stat.number} suffix={stat.suffix} />
-                </div>
-                <div className="text-blue-300 text-xs font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
+     {/* Full Page Hero */}
+<div
+  className="relative h-screen flex items-center justify-center overflow-hidden"
+  style={{
+    backgroundImage: "url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=90&fit=crop')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }}
+>
+  <div className="absolute inset-0 bg-gradient-to-b from-[#0d1f3c]/80 via-[#0d1f3c]/55 to-[#0d1f3c]/90" />
+  <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+    <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      <span className="inline-block bg-[#c0392b] text-white text-xs px-4 py-1.5 rounded-full font-semibold mb-6 tracking-widest uppercase">About Us</span>
+    </motion.div>
+    <motion.h1
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+      style={{ fontFamily: 'Playfair Display, serif' }}
+    >
+      Pakistan's Premier
+      <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2">
+        Tourism Company
+      </span>
+    </motion.h1>
+    <motion.p
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.4 }}
+      className="text-white/75 text-xl max-w-2xl mx-auto leading-relaxed mb-12"
+    >
+      We are passionate about showcasing the breathtaking beauty of Northern Pakistan to travelers from around the world.
+    </motion.p>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.6 }}
+      className="grid grid-cols-2 md:grid-cols-4 gap-4"
+    >
+      {stats.map((stat, i) => (
+        <div key={i} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5">
+          <div className="text-3xl mb-2">{stat.icon}</div>
+          <div className="text-3xl font-bold text-white mb-1">
+            <AnimatedCounter target={stat.number} suffix={stat.suffix} />
+          </div>
+          <div className="text-blue-300 text-xs font-medium">{stat.label}</div>
+        </div>
+      ))}
+    </motion.div>
+  
 
           {/* Scroll indicator */}
           <motion.div
@@ -266,7 +255,7 @@ const About = () => {
           backgroundImage: "url('https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1920&q=90&fit=crop')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          
         }}
       >
         <div className="absolute inset-0 bg-[#0d1f3c]/88" />
