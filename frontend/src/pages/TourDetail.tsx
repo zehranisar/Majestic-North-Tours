@@ -2,17 +2,10 @@ import { API_URL } from '../config'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
-import L from 'leaflet'
+
 import axios from 'axios'
 
-delete (L.Icon.Default.prototype as any)._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-})
+
 
 interface ItineraryItem {
   day: number
@@ -44,13 +37,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [36.3167, 74.6500],
     availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Experience the breathtaking beauty of Hunza Valley, one of the most spectacular regions in the world. Surrounded by some of the highest peaks on earth, Hunza offers stunning landscapes, rich culture, and warm hospitality.',
-    images: [
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1598893669783-dda7c1fd69c7?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200&q=85&fit=crop',
-    ],
+   images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/hunza1.webp',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/hunza2.webp',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/hunza3.jpg',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport Islamabad to Hunza return', 'Hotel accommodation 6 nights', 'Daily breakfast', 'Expert local guide', 'All sightseeing and entry fees', 'Jeep safari where required'],
     exclusions: ['Airfare', 'Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Tips for guides'],
     itinerary: [
@@ -69,12 +62,12 @@ const demoTours: Record<string, Tour> = {
     availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Explore the majestic Skardu region, gateway to K2. Experience crystal clear lakes, ancient forts and breathtaking mountain scenery of Baltistan.',
     images: [
-      'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
-    ],
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/skardu1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/skardu2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/skardu3.jpg',
+  'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport Islamabad to Skardu return', 'Hotel accommodation 4 nights', 'Daily breakfast', 'Expert guide', 'All sightseeing'],
     exclusions: ['Airfare', 'Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Tips for guides'],
     itinerary: [
@@ -91,12 +84,12 @@ const demoTours: Record<string, Tour> = {
     availability: [false, false, false, false, true, true, true, true, true, false, false, false],
     description: 'Trek to the magical Fairy Meadows with the stunning view of Nanga Parbat - the Killer Mountain at 8126m.',
     images: [
-      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=1200&q=85&fit=crop',
-    ],
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/fm1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/fm2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/fm3.jpg',
+  'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport to Raikot Bridge', 'Jeep from Raikot to Tato Village', 'Camping equipment', 'Daily breakfast', 'Expert trek guide', 'Porter services'],
     exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
@@ -110,13 +103,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [34.9833, 75.5500],
     availability: [false, false, false, false, false, true, true, true, true, false, false, false],
     description: 'Visit Deosai National Park - the worlds second highest plateau at 4114m. Famous for Himalayan brown bears and stunning landscapes.',
-    images: [
-      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
-    ],
+     images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/deo1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/deo2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/deo3.jpg',
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Park entry fee'],
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
@@ -131,12 +124,12 @@ const demoTours: Record<string, Tour> = {
     availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Discover Naltar Valley famous for its three stunning colorful lakes, dense pine forests and skiing resort.',
     images: [
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
-    ],
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/nalter1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/nalter2.jpg',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1520962880247-cfaf541d8354?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Guide', 'Jeep safari'],
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Skiing charges'],
     itinerary: [
@@ -150,13 +143,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [36.3333, 74.8667],
     availability: [false, false, false, true, true, true, true, true, true, true, true, false],
     description: 'Visit the stunning turquoise Attabad Lake formed after a massive landslide in 2010.',
-    images: [
-      'https://images.unsplash.com/photo-1510797215324-95aa89f43c33?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-    ],
+   images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/attab1.webp',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/attab2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/attab3.jpg',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport from Gilgit', 'Boat ride on Attabad Lake', 'Guide', 'Breakfast'],
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance'],
     itinerary: [
@@ -168,13 +161,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [35.5167, 75.7667],
     availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Explore ancient Shigar Valley with its magnificent 17th century Shigar Fort and apricot orchards.',
-    images: [
-      'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-    ],
+   images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/shigr1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/shigr2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/shigr3.jpg',
+  'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Fort entry fee'],
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
@@ -189,13 +182,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [35.1667, 74.7500],
     availability: [false, false, false, false, true, true, true, true, true, false, false, false],
     description: 'Trek to Rama Meadows at 3300m in Astore Valley with spectacular views of Nanga Parbat.',
-    images: [
-      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
-    ],
+   images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/rama1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/rama2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/rama3.jpg',
+  'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Camping equipment', 'Daily breakfast', 'Trek guide', 'Porter'],
     exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
@@ -209,12 +202,12 @@ const demoTours: Record<string, Tour> = {
     availability: [false, false, false, false, true, true, true, true, true, false, false, false],
     description: 'Experience the iconic Passu Cathedral Cones and walk on Batura Glacier.',
     images: [
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
-    ],
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/Passu1.png',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/passu2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/passu3.jpg',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Glacier walk equipment'],
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
@@ -229,13 +222,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [35.1667, 76.3333],
     availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Explore beautiful Khaplu Valley - home to the magnificent Khaplu Palace and stunning Shyok River views.',
-    images: [
-      'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-    ],
+       images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/khaplu1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/khaplu2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/Khaplu3.webp',
+  'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Khaplu Palace entry'],
     exclusions: ['Lunch and dinner', 'Personal expenses', 'Travel insurance', 'Airfare'],
     itinerary: [
@@ -251,12 +244,12 @@ const demoTours: Record<string, Tour> = {
     availability: [false, false, false, false, true, true, true, true, false, false, false, false],
     description: 'Discover the pristine Thagas Valley - one of the least explored valleys in Gilgit-Baltistan.',
     images: [
-      'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
-    ],
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/thagus1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/thagus2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/thagus3.jpg',
+  'https://images.unsplash.com/photo-1527515637462-cff94edd8b08?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Camping equipment', 'Daily breakfast', 'Expert guide', 'Porter services'],
     exclusions: ['Personal trekking gear', 'Lunch and dinner', 'Travel insurance', 'Personal expenses'],
     itinerary: [
@@ -272,13 +265,13 @@ const demoTours: Record<string, Tour> = {
     coordinates: [35.8500, 71.7833],
     availability: [false, false, false, true, true, true, true, true, true, true, false, false],
     description: 'Visit the unique Kalash people - one of the last pagan tribes of Pakistan with ancient heritage.',
-    images: [
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
-    ],
+   images: [
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/cht1.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/cht2.jpg',
+  'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/cht3.jpg',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=85&fit=crop',
+  'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=1200&q=85&fit=crop',
+],
     inclusions: ['Transport', 'Hotel accommodation', 'Daily breakfast', 'Expert guide', 'Cultural tour of Kalash valleys'],
     exclusions: ['Airfare', 'Lunch and dinner', 'Personal expenses', 'Travel insurance'],
     itinerary: [
@@ -526,30 +519,20 @@ const TourDetail = () => {
             </div>
 
             {/* Location Map */}
-            <div className="bg-white rounded-2xl shadow-sm p-6">
-              <h3 className="font-bold text-[#0d1f3c] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>Tour Location</h3>
-              <div className="rounded-xl overflow-hidden border border-gray-100" style={{ height: '320px' }}>
-                <MapContainer
-                  center={tour.coordinates}
-                  zoom={10}
-                  style={{ height: '100%', width: '100%' }}
-                  scrollWheelZoom={false}
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; OpenStreetMap contributors'
-                  />
-                  <Marker position={tour.coordinates}>
-                    <Popup>
-                      <div className="text-center p-1">
-                        <p className="font-bold text-sm text-[#0d1f3c]">{tour.name}</p>
-                        <p className="text-xs text-gray-500 mt-1">{tour.region}, Pakistan</p>
-                      </div>
-                    </Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-            </div>
+<div className="bg-white rounded-2xl shadow-sm p-6">
+  <h3 className="font-bold text-[#0d1f3c] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>Tour Location</h3>
+  <div className="rounded-xl overflow-hidden border border-gray-100">
+    <iframe
+      src={`https://www.openstreetmap.org/export/embed.html?bbox=${tour.coordinates[1]-0.5}%2C${tour.coordinates[0]-0.5}%2C${tour.coordinates[1]+0.5}%2C${tour.coordinates[0]+0.5}&layer=mapnik&marker=${tour.coordinates[0]}%2C${tour.coordinates[1]}`}
+      width="100%"
+      height="320"
+      style={{ border: 0 }}
+      loading="lazy"
+      title={tour.name}
+    />
+  </div>
+  <p className="text-xs text-gray-400 mt-2">📍 {tour.name} — {tour.region}, Pakistan</p>
+</div>
 
             {/* Cancellation */}
             <div className="bg-white rounded-2xl shadow-sm p-6">

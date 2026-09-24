@@ -12,7 +12,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://majesticnorthtours.com", "https://majestic-north-tours.vercel.app"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://majestic-north-tours.vercel.app",
+        "https://majesticnorthtours.com",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,8 +31,9 @@ from routes.blogs import router as blogs_router
 from routes.notifications import router as notifications_router
 from routes.uploads import router as uploads_router
 from routes.admin import router as admin_router
+from routes.chatbot import router as chatbot_router
 
-
+app.include_router(chatbot_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
 app.include_router(uploads_router, prefix="/api")
 app.include_router(tours_router, prefix="/api")

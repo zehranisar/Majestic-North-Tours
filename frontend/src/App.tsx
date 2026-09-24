@@ -16,6 +16,7 @@ import AdminTours from './pages/admin/AdminTours'
 import AdminContacts from './pages/admin/AdminContacts'
 import AdminReviews from './pages/admin/AdminReviews'
 import Compare from './pages/Compare'
+import ZukoChatbot from './components/ZukoChatbot'
 
 const Layout = () => {
   const location = useLocation()
@@ -42,6 +43,7 @@ const Layout = () => {
         <Route path="/compare" element={<Compare />} />
       </Routes>
       {!isAdmin && <Footer />}
+      {!isAdmin && <ZukoChatbot />}
     </>
   )
 }
