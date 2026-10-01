@@ -9,7 +9,6 @@ app = FastAPI(
     description="Professional Tourism API for Gilgit-Baltistan",
     version="1.0.0"
 )
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -22,6 +21,30 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 from routes.tours import router as tours_router
 from routes.bookings import router as bookings_router
