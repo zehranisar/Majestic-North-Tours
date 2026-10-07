@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 const FadeIn = ({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null)
@@ -19,17 +20,19 @@ const FadeIn = ({ children, delay = 0, className = '' }: { children: React.React
 }
 
 const Home = () => {
+  const { t } = useTranslation()
+
   const stats = [
-    { number: '500+', label: 'Happy Travelers' },
-    { number: '12+', label: 'Tour Packages' },
-    { number: '10+', label: 'Years Experience' },
-    { number: '15+', label: 'Destinations' },
+    { number: '500+', label: t('happyTravelers') },
+    { number: '12+', label: t('tourPackages') },
+    { number: '10+', label: t('yearsExperience') },
+    { number: '15+', label: t('destinations') },
   ]
 
   const featuredTours = [
-    { id: 1, name: 'Hunza Valley Tour', duration: 7, price: 75000, region: 'Hunza', difficulty: 'Easy', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&fit=crop' },
-    { id: 2, name: 'Skardu Adventure', duration: 5, price: 47500, region: 'Skardu', difficulty: 'Moderate', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop' },
-    { id: 3, name: 'Fairy Meadows Trek', duration: 3, price: 47500, region: 'Diamer', difficulty: 'Hard', image: 'https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=600&q=80&fit=crop' },
+    { id: 1, name: 'Hunza Valley Tour', duration: 7, price: 75000, region: 'Hunza', difficulty: 'Easy', image: 'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/hunza1.webp' },
+    { id: 2, name: 'Skardu Adventure', duration: 5, price: 47500, region: 'Skardu', difficulty: 'Moderate', image: 'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/skardu1.jpg' },
+    { id: 3, name: 'Fairy Meadows Trek', duration: 3, price: 47500, region: 'Diamer', difficulty: 'Hard', image: 'https://nqwjimjqteqdpkkzbyim.supabase.co/storage/v1/object/public/tour-images/fm1.jpg' },
   ]
 
   const whyUs = [
@@ -78,9 +81,9 @@ const Home = () => {
             className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
             style={{ fontFamily: 'Playfair Display, serif' }}
           >
-            Discover the
+            {t('heroTitle')}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-              Majestic North
+              {t('heroSubtitle')}
             </span>
           </motion.h1>
 
@@ -90,7 +93,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl text-white/75 mb-10 max-w-2xl mx-auto leading-relaxed"
           >
-            Experience the breathtaking beauty of Gilgit-Baltistan, Hunza, Skardu and beyond. Premium tours crafted for unforgettable memories.
+            {t('heroDesc')}
           </motion.p>
 
           <motion.div
@@ -100,10 +103,10 @@ const Home = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
             <Link to="/tours" className="bg-gradient-to-r from-[#c0392b] to-red-600 text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-red-500/30 hover:-translate-y-1 transition-all duration-300">
-              Explore Tours 🏔️
+              {t('exploreTours')} 🏔️
             </Link>
             <Link to="/contact" className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all duration-300">
-              Contact Us ✉️
+              {t('contactUs')} ✉️
             </Link>
           </motion.div>
 
@@ -128,9 +131,9 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="text-center mb-16">
-              <span className="text-[#c0392b] font-semibold text-sm uppercase tracking-widest">Our Tours</span>
+              <span className="text-[#c0392b] font-semibold text-sm uppercase tracking-widest">{t('tours')}</span>
               <h2 className="text-4xl font-bold text-[#0d1f3c] mt-3 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Featured Packages
+                {t('featuredPackages')}
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">Handpicked tours for the most memorable experience in Northern Pakistan</p>
             </div>
@@ -141,7 +144,8 @@ const Home = () => {
               <FadeIn key={tour.id} delay={i * 0.15}>
                 <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
                   <div className="relative h-56 overflow-hidden">
-                    <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&fit=crop' }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <span className="absolute top-3 left-3 bg-[#c0392b] text-white text-xs px-3 py-1 rounded-full font-medium">Featured</span>
                     <span className={`absolute top-3 right-3 text-xs px-3 py-1 rounded-full font-medium ${tour.difficulty === 'Easy' ? 'bg-green-100 text-green-700' : tour.difficulty === 'Moderate' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
@@ -151,17 +155,17 @@ const Home = () => {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">{tour.region}</span>
-                      <span className="text-xs text-gray-400">{tour.duration} Days</span>
+                      <span className="text-xs text-gray-400">{tour.duration} {t('days')}</span>
                     </div>
                     <h3 className="text-lg font-bold text-[#0d1f3c] mb-4">{tour.name}</h3>
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                       <div>
-                        <span className="text-xs text-gray-400">Starting from</span>
+                        <span className="text-xs text-gray-400">{t('startingFrom')}</span>
                         <p className="text-xl font-bold text-[#c0392b]">PKR {tour.price.toLocaleString()}</p>
-                        <span className="text-xs text-gray-400">per person</span>
+                        <span className="text-xs text-gray-400">{t('perPerson')}</span>
                       </div>
                       <Link to={`/tours/${tour.id}`} className="bg-[#1a3a6b] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-[#c0392b] transition-colors duration-200">
-                        View Details
+                        {t('viewDetails')}
                       </Link>
                     </div>
                   </div>
@@ -173,7 +177,7 @@ const Home = () => {
           <FadeIn delay={0.3}>
             <div className="text-center mt-12">
               <Link to="/tours" className="inline-flex items-center gap-2 border-2 border-[#1a3a6b] text-[#1a3a6b] px-10 py-3.5 rounded-full font-bold hover:bg-[#1a3a6b] hover:text-white transition-all duration-300">
-                View All Tours →
+                {t('viewAllTours')} →
               </Link>
             </div>
           </FadeIn>
