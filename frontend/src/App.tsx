@@ -17,6 +17,8 @@ import AdminContacts from './pages/admin/AdminContacts'
 import AdminReviews from './pages/admin/AdminReviews'
 import Compare from './pages/Compare'
 import ZukoChatbot from './components/ZukoChatbot'
+import Reviews from './pages/Reviews'
+
 
 const Layout = () => {
   const location = useLocation()
@@ -41,6 +43,7 @@ const Layout = () => {
         <Route path="/admin/contacts" element={<AdminContacts />} />
         <Route path="/admin/reviews" element={<AdminReviews />} />
         <Route path="/compare" element={<Compare />} />
+        <Route path="/reviews" element={<Reviews />} />
       </Routes>
       {!isAdmin && <Footer />}
       {!isAdmin && <ZukoChatbot />}
