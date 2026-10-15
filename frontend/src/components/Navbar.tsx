@@ -28,6 +28,7 @@ const Navbar = () => {
     { name: t('blog'), path: '/blog' },
     { name: t('contact'), path: '/contact' },
     { name: t('terms'), path: '/terms' },
+    { name: 'Reviews', path: '/reviews' },
   ]
 
   return (
@@ -88,12 +89,7 @@ const Navbar = () => {
 
           {/* Book Now + Language Toggle */}
           <div className="hidden md:flex items-center gap-3">
-            <button
-              onClick={toggleLanguage}
-              className="text-white/70 text-xs hover:text-white transition-colors border border-white/20 px-3 py-1.5 rounded-full"
-            >
-              {isUrdu ? 'English' : 'اردو'}
-            </button>
+            
             <Link
               to="/tours"
               className="bg-[#c0392b] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-red-700 hover:shadow-lg hover:scale-105 transition-all duration-200"
