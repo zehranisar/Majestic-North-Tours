@@ -111,6 +111,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/40 text-sm">© 2026 Majestic North Tours. All rights reserved.</p>
           <div className="flex items-center gap-6">
+        <Link to="/admin" className="text-white/40 text-sm hover:text-white transition-colors">Admin</Link>
             <Link to="/terms" className="text-white/40 text-sm hover:text-white transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="text-white/40 text-sm hover:text-white transition-colors">Terms & Conditions</Link>
             <Link to="/terms" className="text-white/40 text-sm hover:text-white transition-colors">Refund Policy</Link>
