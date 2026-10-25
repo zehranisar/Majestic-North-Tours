@@ -13,7 +13,10 @@ interface ItineraryItem {
   desc: string
 }
 
-interface Tour {
+interface Tour { 
+
+  
+  
   id: number
   name: string
   duration_days: number
@@ -31,7 +34,9 @@ interface Tour {
   availability: boolean[]
 }
 
-const demoTours: Record<string, Tour> = {
+const demoTours: Record<string, Tour> = {    
+
+  
   '1': {
     id: 1, name: 'Hunza Valley Tour', duration_days: 7, price: 75000, region: 'Hunza', difficulty: 'Easy', max_people: 5, is_featured: true,
     coordinates: [36.3167, 74.6500],
