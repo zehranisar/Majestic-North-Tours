@@ -11,6 +11,7 @@ const resources = {
       blog: 'Blog',
       contact: 'Contact',
       terms: 'Terms',
+      reviews: 'Reviews',
       bookNow: 'Book Now',
 
       // Home
@@ -53,15 +54,25 @@ const resources = {
       tourLocation: 'Tour Location',
       tourAvailability: 'Tour Availability',
       bookNowBtn: 'Book Now',
+      bookNowPrice: 'Book Now',
       whatsappInquiry: 'WhatsApp Inquiry',
       freeCancellation: 'Free cancellation up to 30 days before',
       bestPrice: 'Best price guaranteed',
       support247: '24/7 customer support',
       breakfastIncluded: 'Breakfast included',
+      dayByDay: 'Day by Day Itinerary',
+
+      // About
+      ourStory: 'Our Story',
+      ourValues: 'Our Core Values',
+      meetTeam: 'Meet Our Team',
+      whyChooseUs: 'Why Choose Majestic North?',
+      exploreOurTours: 'Explore Our Tours',
 
       // Contact
       getInTouch: 'Get In Touch',
       sendMessage: 'Send Message',
+      sendMessageBtn: 'Send Message',
       fullName: 'Full Name',
       phoneNumber: 'Phone Number',
       emailAddress: 'Email Address',
@@ -69,6 +80,12 @@ const resources = {
       message: 'Message',
       send: 'Send Message',
       messageSent: 'Message Sent!',
+      followUs: 'Follow Us',
+      officeHours: 'Office Hours',
+      faqTitle: 'Frequently Asked Questions',
+
+      // Blog
+      browseTourPackages: 'Browse Tour Packages',
 
       // Footer
       quickLinks: 'Quick Links',
@@ -85,6 +102,7 @@ const resources = {
       blog: 'بلاگ',
       contact: 'رابطہ',
       terms: 'شرائط',
+      reviews: 'جائزے',
       bookNow: 'ابھی بک کریں',
 
       // Home
@@ -127,15 +145,25 @@ const resources = {
       tourLocation: 'ٹور مقام',
       tourAvailability: 'ٹور دستیابی',
       bookNowBtn: 'ابھی بک کریں',
+      bookNowPrice: 'ابھی بک کریں',
       whatsappInquiry: 'واٹس ایپ پر پوچھیں',
       freeCancellation: 'روانگی سے 30 دن پہلے مفت منسوخی',
       bestPrice: 'بہترین قیمت کی گارنٹی',
       support247: '24/7 کسٹمر سپورٹ',
       breakfastIncluded: 'ناشتہ شامل ہے',
+      dayByDay: 'روزانہ کا سفر نامہ',
+
+      // About
+      ourStory: 'ہماری کہانی',
+      ourValues: 'ہماری بنیادی اقدار',
+      meetTeam: 'ہماری ٹیم سے ملیں',
+      whyChooseUs: 'میجسٹک نارتھ کیوں منتخب کریں؟',
+      exploreOurTours: 'ہمارے ٹورز دیکھیں',
 
       // Contact
       getInTouch: 'رابطہ کریں',
       sendMessage: 'پیغام بھیجیں',
+      sendMessageBtn: 'پیغام بھیجیں',
       fullName: 'پورا نام',
       phoneNumber: 'فون نمبر',
       emailAddress: 'ای میل',
@@ -143,6 +171,12 @@ const resources = {
       message: 'پیغام',
       send: 'پیغام بھیجیں',
       messageSent: 'پیغام بھیج دیا گیا!',
+      followUs: 'ہمیں فالو کریں',
+      officeHours: 'دفتری اوقات',
+      faqTitle: 'اکثر پوچھے گئے سوالات',
+
+      // Blog
+      browseTourPackages: 'ٹور پیکجز دیکھیں',
 
       // Footer
       quickLinks: 'فوری لنکس',
