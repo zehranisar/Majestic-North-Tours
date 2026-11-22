@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+API_KEY = os.getenv("GEMINI_API_KEY")
+if API_KEY:
+    genai.configure(api_key=API_KEY)
 
 router = APIRouter()
 
@@ -24,27 +26,36 @@ Rules:
 - Be friendly and concise
 - Respond in same language as user (Urdu or English)"""
 
+
+@router.get("/chatbot/health")
+def chatbot_health():
+    return {"gemini_key_set": bool(API_KEY)}
+
+
 @router.post("/chatbot")
-async def chat(data: dict):
+def chat(data: dict):
+    if not API_KEY:
+        return {"response": "Zuko is not configured yet. Please contact us on WhatsApp: +92 325 1002509"}
+
     try:
         user_message = data.get("message", "")
         history = data.get("history", [])
-        
+
         model = genai.GenerativeModel(
             model_name="gemini-3.8-flash",
             system_instruction=SYSTEM_PROMPT
         )
-        
+
         chat_history = []
         for msg in history:
             chat_history.append({
                 "role": "user" if msg["role"] == "user" else "model",
                 "parts": [msg["content"]]
             })
-        
-        chat = model.start_chat(history=chat_history)
-        response = chat.send_message(user_message)
-        
+
+        chat_session = model.start_chat(history=chat_history)
+        response = chat_session.send_message(user_message, request_options={"timeout": 25})
+
         return {"response": response.text}
     except Exception as e:
         print(f"Chatbot error: {e}")
